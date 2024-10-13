@@ -1,24 +1,58 @@
 import { View, StyleSheet, Text } from 'react-native'
 import { Link, Stack } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
+import TxtColor from './components/TxtColor'
+import IconBtn from './components/IconBtn'
+import Contacts from './components/Contacts'
+import TopPannel from './components/TopPannel'
+import MenuPannel from './components/MenuPannel'
+import { appStyles } from './Styles'
+
 
 export default function NotFoundScreen() {
   return (
-    <View>
+    <View style={appStyles.container}>
 
-      <Stack.Screen options={{ title: 'Oops!' }} />
+      <Stack.Screen options={{ title: 'Error 404' }} />
 
-      <Link href="/">
-        <Ionicons size={30} name={'home'} color="black" />
-        <Text>Go to home screen!</Text>
+      <TopPannel />
+
+      <Link style={styles.menuLink} href={`/`}>
+        <IconBtn ico="Workshop" />
+        <TxtColor props={{txt:`Workshop`, color:"txtWht"}} />
       </Link>
       
-      <Text>This screen doesn't exist.</Text>
+      <View style={styles.info}>
+        <Text style={styles.txt}>Strona nie istnieje.</Text>
+        <Text style={styles.txt}>Wróć na stronę główną, używając przycisku powyżej.</Text>
+      </View>
+
+      <View style={{ flex: 1 }} />
+
+      <Contacts />
+
+      <MenuPannel />
 
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-
+  menuLink: {
+    alignItems:"stretch"
+  },
+  info: {
+    margin:20,
+    padding:20,
+    borderWidth: 1,
+    borderColor: appStyles.txtGry.color,
+    borderStyle: 'dashed',
+    borderRadius:10
+  },
+  txt: {
+    ...appStyles.txtRed,
+    textAlign:"center",
+    marginTop:20,
+    marginBottom:20,
+    fontSize:15
+  }
 })

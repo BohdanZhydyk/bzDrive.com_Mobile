@@ -5,6 +5,7 @@ import TxtColor from '../TxtColor'
 import IconBtn from '../IconBtn'
 import { Link } from 'expo-router'
 import { appStyles } from '../../Styles'
+import StateStyled from '../StateStyled'
 
 
 const MenuPannel = () => {
@@ -37,7 +38,7 @@ const MenuPannel = () => {
       </View>
 
       {
-        nav && nav?.map( (navLink, n)=>{
+        (isMenu && nav) && nav?.map( (navLink, n)=>{
 
           const to = navLink?.to
           const name = navLink?.name
@@ -53,6 +54,8 @@ const MenuPannel = () => {
           )
         })
       }
+
+    <StateStyled />
 
     </View>
   )

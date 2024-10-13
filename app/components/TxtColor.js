@@ -4,7 +4,7 @@ import { appStyles } from '../Styles'
 
 const TxtColor = ({props}) => {
 
-  const {txt, color} = props
+  const {txt, color, size} = props
 
   function textColor(){
     switch (color) {
@@ -22,7 +22,7 @@ const TxtColor = ({props}) => {
 
   return (
     <View>
-      <Text style={textColor()}>{txt}</Text>
+      <Text style={{...textColor(), fontSize:size}}>{txt}</Text>
     </View>
   )
 }
