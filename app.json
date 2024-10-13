@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "bzDrive",
-    "slug": "bzDrive",
+    "slug": "bzdrive",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
@@ -35,8 +35,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "3136b2ac-ba5a-43db-9865-22ed04b5e88e"
+        "projectId": "8c106ea1-850e-45ae-9c12-3a5fe38879f6"
       }
-    }
+    },
+    "owner": "bz83"
   }
 }
