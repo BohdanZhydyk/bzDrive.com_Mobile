@@ -6,7 +6,7 @@ import { appStyles } from '../Styles'
 const ComingSoon = () => {
   return (
     <View style={styles.soon}>
-      <Text style={styles.txt}>Ta strona jest w trakcie tworzenia.</Text>
+      <Text style={styles.txt}>Ta aplikacja jest w trakcie tworzenia.</Text>
       <Text style={styles.txt}>W najbliższym czasie pojawi się tutaj więcej informacji.</Text>
     </View>
   )

@@ -4,6 +4,7 @@ import TxtColor from './components/TxtColor'
 import Contacts from './components/Contacts'
 import TopPannel from './components/TopPannel'
 import MenuPannel from './components/MenuPannel'
+import ComingSoon from './components/ComingSoon'
 import { appStyles } from './Styles'
 
 
@@ -14,9 +15,12 @@ const WorkshopScreen = () => {
       <TopPannel />
 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
+
         <View style={appStyles.center}>
           <TxtColor props={{txt:"Workshop", color:"txtWht", size:20}} />
         </View>
+
+        <ComingSoon />
 
         <View style={{ flex: 1 }} />
 

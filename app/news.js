@@ -15,6 +15,7 @@ const NewsScreen = () => {
       <TopPannel />
 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
+        
         <View style={appStyles.center}>
           <TxtColor props={{txt:"News", color:"txtWht", size:20}} />
         </View>
