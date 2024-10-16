@@ -5,10 +5,15 @@ import Contacts from './components/Contacts'
 import TopPannel from './components/TopPannel'
 import MenuPannel from './components/MenuPannel'
 import ComingSoon from './components/ComingSoon'
+import EmptyContent from './components/EmptyContent'
 import { appStyles } from './Styles'
+import { useAppState } from './StateContext'
 
 
 const WorkshopScreen = () => {
+
+  const { info } = useAppState()
+
   return (
     <View style={appStyles.container}>
 
@@ -16,11 +21,22 @@ const WorkshopScreen = () => {
 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
 
-        <View style={appStyles.center}>
-          <TxtColor props={{txt:"Workshop", color:"txtWht", size:20}} />
-        </View>
+        {
+          info
+          ?
+          <>
 
-        <ComingSoon />
+            <View style={appStyles.center}>
+              <TxtColor props={{txt:"Workshop", color:"txtWht", size:20}} />
+            </View>
+    
+            <ComingSoon />
+
+          </>
+          :
+          <EmptyContent />
+        }
+
 
         <View style={{ flex: 1 }} />
 

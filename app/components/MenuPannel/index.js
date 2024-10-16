@@ -55,6 +55,14 @@ const MenuPannel = () => {
         })
       }
 
+      {
+        isMenu &&
+        <Link style={styles.menuLink} href={`/cleaning`} onPress={()=>setIsMenu(prev=>!prev)} key={`MenuLinkBtnClean`}>
+          <IconBtn ico={`Cleaning`} />
+          <TxtColor props={{txt:`Cleaning`, color:"txtWht"}} />
+        </Link>
+      }
+
     <StateStyled />
 
     </View>

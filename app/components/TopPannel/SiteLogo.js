@@ -10,16 +10,26 @@ const SiteLogo = () => {
   const uri = info?.img
 
   return (
-    <View>
-    {
-      info &&
-      <View style={{...appStyles.row, ...appStyles.center}}>
-        <Image source={{ uri }} style={{...appStyles.icoBtn, marginLeft:10, marginRight:10}} />
-        <Text style={{...appStyles.txtOrg, ...styles.logoText}}>{link[0]}</Text>
-        <Text style={{...appStyles.txtWht, ...styles.logoText}}>{link[1]}</Text>
-        <Text style={{...appStyles.txtOrg, ...styles.logoText}}>{link[2]}</Text>
-      </View>
-    }
+    <View style={{...appStyles.row, ...appStyles.center}}>
+
+      {
+        info
+        ? <Image source={{ uri }} style={{...appStyles.icoBtn, marginLeft:10, marginRight:10}} />
+        : <View style={{...appStyles.icoBtn, ...appStyles.icoBtnEmpty}} ></View>
+      }
+
+      {
+        info
+        ?
+        <>
+          <Text style={{...appStyles.txtOrg, ...styles.logoText}}>{link[0]}</Text>
+          <Text style={{...appStyles.txtWht, ...styles.logoText}}>{link[1]}</Text>
+          <Text style={{...appStyles.txtOrg, ...styles.logoText}}>{link[2]}</Text>
+        </>
+        :
+        <View style={{...appStyles.icoBtn, ...appStyles.icoTxtEmpty}} ></View>
+      }
+    
     </View>
   )
 }

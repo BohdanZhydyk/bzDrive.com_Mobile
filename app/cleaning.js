@@ -6,11 +6,12 @@ import TopPannel from './components/TopPannel'
 import MenuPannel from './components/MenuPannel'
 import ComingSoon from './components/ComingSoon'
 import EmptyContent from './components/EmptyContent'
+import Cleaning from './components/Cleaning'
 import { appStyles } from './Styles'
 import { useAppState } from './StateContext'
 
 
-export default function OfficeScreen() {
+const CleaningScreen = () => {
 
   const { info } = useAppState()
 
@@ -21,21 +22,7 @@ export default function OfficeScreen() {
 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} >
         
-        {
-          info
-          ?
-          <>
-
-            <View style={appStyles.center}>
-              <TxtColor props={{txt:"Office", color:"txtWht", size:20}} />
-            </View>
-    
-            <ComingSoon />
-
-          </>
-          :
-          <EmptyContent />
-        }
+        { info ? <Cleaning /> : <EmptyContent /> }
 
         <View style={{ flex: 1 }} />
 
@@ -48,3 +35,5 @@ export default function OfficeScreen() {
     </View>
   )
 }
+
+export default CleaningScreen

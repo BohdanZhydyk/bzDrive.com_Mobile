@@ -43,9 +43,10 @@ const RootLayoutContent = () => {
   return (
     <SafeAreaView style={{ flex:1, marginTop:StatusBar.currentHeight }}>
       <Stack>
-        <Stack.Screen name="index"    options={{ headerShown: false }} />
-        <Stack.Screen name="news"     options={{ headerShown: false }} />
-        <Stack.Screen name="office"   options={{ headerShown: false }} />
+        <Stack.Screen name="index"      options={{ headerShown: false }} />
+        <Stack.Screen name="news"       options={{ headerShown: false }} />
+        <Stack.Screen name="cleaning"   options={{ headerShown: false }} />
+        <Stack.Screen name="office"     options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar barStyle="light-content" backgroundColor={appStyles.txtDrk.color} />

@@ -15,6 +15,27 @@ export const appStyles = StyleSheet.create({
     justifyContent:"center",
     alignItems:"center"
   },
+  icoBtnEmpty: {
+    backgroundColor:"#7777",
+    borderRadius:5,
+    marginLeft:5,
+    marginRight:5
+  },
+  icoTxtEmpty: {
+    width:200,
+    backgroundColor:"#7777",
+    borderRadius:5,
+    marginLeft:5,
+    marginRight:5
+  },
+  icoParagraphEmpty: {
+    height:30,
+    backgroundColor:"#7777",
+    borderRadius:5,
+    marginTop:20,
+    marginLeft:5,
+    marginRight:5,
+  },
 
   none: { display:"none" },
   wrap: { flexWrap:"wrap" },
@@ -26,14 +47,14 @@ export const appStyles = StyleSheet.create({
   between: { justifyContent:"space-between" },
   evenly: { justifyContent:"space-evenly" },
   around: { justifyContent:"space-around" },
-  center: { alignItems:"center" },
+  center: { alignItems:"center", justifyContent:"center" },
 
   radius: { borderRadius:4 },
 
   txtWht:{ color:"#fff" },
   txtBlc:{ color:"#000" },
   txtDrk:{ color:"#222" },
-  txtGry:{ color:"#555" },
+  txtGry:{ color:"#999" },
   txtOrg:{ color:"#f60" },
   txtGrn:{ color:"#191" },
   txtBlu:{ color:"#00f" },

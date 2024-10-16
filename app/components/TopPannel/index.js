@@ -1,15 +1,11 @@
-import { Pressable, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import { appStyles } from '../../Styles'
-import IconBtn from '../IconBtn'
-import { useAppState } from '../../StateContext'
-import SiteIcon from '../SiteIcon'
 import SiteLogo from './SiteLogo'
+import MenuUnfoldBtn from './MenuUnfoldBtn'
 
 
 const TopPannel = () => {
-
-  const { setIsMenu } = useAppState()
 
   return (
     <View style={styles.topPannel}>
@@ -18,9 +14,7 @@ const TopPannel = () => {
 
       <SiteLogo />
 
-      <Pressable onPress={()=>setIsMenu(prev=>!prev)} >
-        <IconBtn ico="menuUnfold" />
-      </Pressable>
+      <MenuUnfoldBtn />
 
     </View>
   )
