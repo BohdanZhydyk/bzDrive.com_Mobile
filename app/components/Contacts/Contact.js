@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet} from 'react-native'
+import { Image, Pressable, Linking} from 'react-native'
 import React from 'react'
 import { appStyles } from '../../Styles'
 

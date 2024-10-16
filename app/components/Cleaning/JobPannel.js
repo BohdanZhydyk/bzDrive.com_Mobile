@@ -2,15 +2,27 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { appStyles } from '../../Styles'
 import IconBtn from '../IconBtn'
-import Contact from '../Contacts/Contact'
+import ContactImgs from './ContactImgs'
+import { sanitizeTxt } from '../../AppFunctions'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 
 const JobPannel = ({props}) => {
 
   const {job, setJob} = props
 
-  const [from, setFrom] = useState(job?.time?.from)
-  const [to, setTo] = useState(job?.time?.to)
+  const getDateFromTimeString = (timeString) => {
+    const [hours, minutes] = timeString.split(':').map(Number)
+    const date = new Date()
+    date.setHours(hours)
+    date.setMinutes(minutes)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    return date
+  }
+  
+  const [from, setFrom] = useState(getDateFromTimeString(job?.time?.from || "00:00"))
+  const [to, setTo] = useState(getDateFromTimeString(job?.time?.to || "00:00"))
 
   const client = job?.client
   const [name, setName] = useState(client?.name)
@@ -30,14 +42,23 @@ const JobPannel = ({props}) => {
 
   const [tasks, setTasks] = useState(job?.tasks)
   const [price, setPrice] = useState(job?.price)
-
-  const contactImgs = [
-    { key: "map", val: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${street} ${nr}, ${town}, ${zip}`)}` },
-    { key: "web", val: www },
-    { key: "email", val: `mailto: ${email}` },
-    { key: "tel", val: `tel: ${tel}` }
-  ]
   
+  const [showPicker, setShowPicker] = useState({ from: false, to: false })
+
+  const handleTimeChange = (type, event, selectedTime) => {
+    const currentTime = selectedTime || (type === 'from' ? from : to)
+    setShowPicker({ ...showPicker, [type]: false })
+    if (type === 'from') { setFrom(currentTime) }
+    else { setTo(currentTime) }
+  }
+
+  const showPickerFor = (type) => { setShowPicker({ ...showPicker, [type]: true }) }
+
+  const formatTime = (date) => (`${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`)
+
+  const formattedFrom = formatTime(from)
+  const formattedTo = formatTime(to)
+
   return (
     <View style={styles.jobPannel}>
 
@@ -48,31 +69,45 @@ const JobPannel = ({props}) => {
       <Text style={appStyles.txtGry}>{`ID: ${job?.id}`}</Text>
 
       <View style={styles.line}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Text style={styles.txtName}>{`Krótka nazwa:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={shortName}
+            value={sanitizeTxt(shortName, "CompanyNameShort")?.sanText}
             onChangeText={setShortName}
           />
         </View>
-        <View style={{width:"20%", marginLeft:3}}>
+        <View style={{ width: "20%", marginLeft: 3 }}>
           <Text style={styles.txtName}>{`Od:`}</Text>
-          <TextInput
-            style={styles.inputTxt}
-            value={from}
-            onChangeText={setFrom}
-            keyboardType="numeric"
-          />
+          <Pressable onPress={() => showPickerFor('from')}>
+            <Text style={{...styles.inputTxt, textAlign: 'center'}}>{formattedFrom}</Text>
+          </Pressable>
+          {
+            showPicker.from &&
+            <DateTimePicker
+              value={from}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={(event, selectedTime) => handleTimeChange('from', event, selectedTime)}
+            />
+          }
         </View>
-        <View style={{width:"20%", marginLeft:3}}>
+        <View style={{ width: "20%", marginLeft: 3 }}>
           <Text style={styles.txtName}>{`Do:`}</Text>
-          <TextInput
-            style={styles.inputTxt}
-            value={to}
-            onChangeText={setTo}
-            keyboardType="numeric"
-          />
+          <Pressable onPress={() => showPickerFor('to')}>
+            <Text style={{...styles.inputTxt, textAlign: 'center'}}>{formattedTo}</Text>
+          </Pressable>
+          {
+            showPicker.to &&
+            <DateTimePicker
+              value={to}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={(event, selectedTime) => handleTimeChange('to', event, selectedTime)}
+            />
+          }
         </View>
       </View>
 
@@ -81,7 +116,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`Nazwa:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={name}
+            value={sanitizeTxt(name, "CompanyName")?.sanText}
             onChangeText={setName}
           />
         </View>
@@ -92,7 +127,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`NIP:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={nip}
+            value={sanitizeTxt(nip, "NIP")?.sanText}
             onChangeText={setNIP}
             keyboardType="numeric"
           />
@@ -101,7 +136,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`Tel:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={tel}
+            value={sanitizeTxt(tel, "tel")?.sanText}
             onChangeText={setTel}
             keyboardType="phone-pad"
           />
@@ -113,7 +148,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`WWW:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={www}
+            value={sanitizeTxt(www, "www")?.sanText}
             onChangeText={setWWW}
             keyboardType="url"
           />
@@ -122,7 +157,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`E-mail:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={email}
+            value={sanitizeTxt(email, "email")?.sanText}
             onChangeText={setEmail}
             keyboardType="email-address"
           />
@@ -130,11 +165,11 @@ const JobPannel = ({props}) => {
       </View>
 
       <View style={styles.line}>
-        <View style={{width:"20%", marginLeft:3}}>
+        <View style={{width:"18%", marginLeft:3}}>
           <Text style={styles.txtName}>{`ZIP:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={zip}
+            value={sanitizeTxt(zip, "ZIP")?.sanText}
             onChangeText={setZIP}
             keyboardType="numeric"
           />
@@ -143,7 +178,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`Miasto:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={town}
+            value={sanitizeTxt(town, "town")?.sanText}
             onChangeText={setTown}
           />
         </View>
@@ -151,15 +186,15 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`Ulica:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={street}
+            value={sanitizeTxt(street, "StreetName")?.sanText}
             onChangeText={setStreet}
           />
         </View>
-        <View style={{width:"10%", marginLeft:3}}>
+        <View style={{width:"15%", marginLeft:3}}>
           <Text style={styles.txtName}>{`Nr:`}</Text>
           <TextInput
             style={styles.inputTxt}
-            value={nr}
+            value={sanitizeTxt(nr, "default")?.sanText}
             onChangeText={setNr}
             keyboardType="numeric"
           />
@@ -171,7 +206,7 @@ const JobPannel = ({props}) => {
           <Text style={styles.txtName}>{`Usługi:`}</Text>
           <TextInput
             style={styles.textArea}
-            value={tasks}
+            value={sanitizeTxt(tasks, "default")?.sanText}
             onChangeText={setTasks}
             multiline={true}
             rows={4}
@@ -187,8 +222,8 @@ const JobPannel = ({props}) => {
         <View style={{width:"20%"}}>
           <Text style={styles.txtName}>{`Cena:`}</Text>
           <TextInput
-            style={styles.inputTxt}
-            value={price}
+            style={{...styles.inputTxt, textAlign: 'end'}}
+            value={sanitizeTxt(price, "price")?.sanText}
             onChangeText={setPrice}
             keyboardType="decimal-pad"
           />
@@ -196,13 +231,7 @@ const JobPannel = ({props}) => {
         <Text style={styles.zl}>{`zł`}</Text>
       </View>
 
-      <View style={styles.contacts}>
-      {
-        contactImgs?.map( (contact, c)=>{
-          return( <Contact contact={contact} key={`JobPannelContactImg${contact?.key}${c}`} /> )
-        })
-      }
-      </View>
+      <ContactImgs props={{zip, town, street, nr, www, email, tel}} />
 
     </View>
   )
@@ -248,6 +277,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 5,
     borderRadius: 5,
+    height: 25
   },
   textArea: {
     height: 100,
@@ -266,13 +296,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     marginLeft: 10,
     marginBottom: 5
-  },
-  contacts: {
-    position: "absolute",
-    width: "70%",
-    bottom: 10,
-    right: 10,
-    ...appStyles.row,
-    ...appStyles.between
   }
 })

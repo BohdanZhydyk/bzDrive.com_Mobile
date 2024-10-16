@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { appStyles } from '../../Styles'
+import { sanitizeTxt } from '../../AppFunctions'
 
 
 const JobElement = ({props}) => {
@@ -8,14 +9,16 @@ const JobElement = ({props}) => {
   const {job, setJob} = props
 
   const time = `${job?.time?.from}-${job?.time?.to}`
-  const shortName = job?.client?.shortName
-  const tel = job?.client?.contacts?.tel
+  const shortName = sanitizeTxt(job?.client?.shortName, "CompanyNameShort")?.sanText
+  // const tel = sanitizeTxt(job?.client?.contacts?.tel, "tel")?.sanText
+  const price = sanitizeTxt(job?.price, "price")?.sanText
 
   return (
     <Pressable style={styles.jobElement} onPress={()=>setJob(prev=>job)} >
-      <Text style={appStyles.txtOrg}>{time}</Text>
+      <Text style={appStyles.txtYlw}>{time}</Text>
       <Text style={appStyles.txtWht}>{shortName}</Text>
-      <Text style={appStyles.txtYlw}>{tel}</Text>
+      {/* <Text style={appStyles.txtYlw}>{tel}</Text> */}
+      <Text style={{...appStyles.txtOrg, textAlign:"end"}}>{`${price} zł`}</Text>
     </Pressable>
   )
 }
