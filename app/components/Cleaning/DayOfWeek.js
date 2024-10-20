@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { appStyles } from '../../Styles'
 import JobElement from './JobElement'
+import { dateFromYYYYMMDD } from '../../AppFunctions'
 
 
 const DayOfWeek = ({props}) => {
@@ -10,7 +11,7 @@ const DayOfWeek = ({props}) => {
 
   const dayName = day?.dayInfo?.name
   const date = day?.dayInfo?.date
-  const shortDate = date.split('.').slice(0, 2).join('.')
+  const shortDate = `${dateFromYYYYMMDD(date).DD}.${dateFromYYYYMMDD(date).MM}`
 
   return (
     <View style={styles.dayOfWeek} >
@@ -21,13 +22,11 @@ const DayOfWeek = ({props}) => {
       </View>
 
       <View style={styles.schedule}>
-
         {
           day?.schedule.map( (job, j)=> (
             <JobElement props={{job, setJob}} key={`Job${d}${j}${job?.id}`} />
           ))
         }
-
       </View>
 
     </View>
@@ -39,6 +38,7 @@ export default DayOfWeek
 const styles = StyleSheet.create({
   dayOfWeek: {
     ...appStyles.row,
+    minHeight:85,
     padding: 5
   },
   dayInfo: {

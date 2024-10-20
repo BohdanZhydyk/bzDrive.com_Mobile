@@ -1,6 +1,35 @@
+import { Platform } from 'react-native'
+import axios from 'axios'
+
+// dateFromDDMMYYYY functions
+export const dateFromYYYYMMDD = ( YYYYMMDD ) => {
+  const date = new Date()
+  const YYYY = YYYYMMDD ? YYYYMMDD.toString().slice(0, 4) : date.getFullYear().toString()
+  const MM = YYYYMMDD ? YYYYMMDD.toString().slice(4, 6) : (date.getMonth() + 1).toString().padStart(2, '0')
+  const DD = YYYYMMDD ? YYYYMMDD.toString().slice(6, 8) : date.getDate().toString().padStart(2, '0')
+  return { YYYY, MM, DD }
+}
+
+// getDateFromTimeString functions
+export const getDateFromTimeString = (timeString) => {
+  const [hours, minutes] = timeString.split(':').map(Number)
+  const date = new Date()
+  date.setHours(hours)
+  date.setMinutes(minutes)
+  date.setSeconds(0)
+  date.setMilliseconds(0)
+  return date
+}
+
+// getTimeStringFromDate functions
+export const getTimeStringFromDate = (date) => {
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  return `${hours}:${minutes}`
+}
 
 // sanitization functions
-export const sanitizeTxt = (txt, name = "default")=>{
+export const sanitizeTxt = ( txt, name = "default" ) => {
 
   const lang = "pl"
 
@@ -242,4 +271,73 @@ export const sanitizeTxt = (txt, name = "default")=>{
     sanText = numericValue.toFixed(2)
     return { sanText, sanErr }
   }
+}
+
+// function for sending a POST request to the server and receiving a response from it
+export const PostToApi = async (link, object, callback)=>{
+  // Set up the API link to use based on the environment (local or remote)
+  const localLink = 'http://localhost:2000/API'
+  const domainLink = 'https://bzdrive.com/API'
+  const localHost = Platform.OS === 'web'
+  // const localHost = window.location.hostname === 'localhost'
+  const API = localHost ? localLink : domainLink
+
+  const bzToken = "bzDriveMobileToken"
+
+  // Get the IP data for the current user and add it to the request
+  const IP = await axios.get('https://json.geoiplookup.io')
+  .then( (res)=> ({
+      host:         API,
+      from:         link,
+      ip:           res.data.ip,
+      postal_code:  res.data.postal_code,
+      country_code: res.data.country_code,
+      country_name: res.data.country_name,
+      region:       res.data.region,
+      city:         res.data.city,
+      asn_org:      res.data.asn_org
+      //isp:org:hostname:latitude:longitude:continent_code:continent_name:district:timezone_name:
+      //connection_type:asn_number:asn:currency_code:currency_name:success:premium: 
+  }))
+  .catch( (err)=>{
+    console.error("IP Error:", err)
+    return false
+  })
+
+  // Send the request to the server with the required data and get response
+  axios.post( API + link, { bzToken, IP, object } ).then( (resData)=>{
+
+    const Data = resData.data
+
+    // Set the user language based on the IP country code if not already set
+    const setLanguage = ()=>{
+      const language = Data?.IP?.country_code?.toLowerCase()
+      return(
+        Data?.user?.lang
+        ? Data.user.lang
+        : ["en", "ua", "pl"].includes(language) ? language : "en"
+      )
+    }
+    
+    // Set the token and user data in local storage
+    // SetToken(Data?.bzToken)
+    // SetUser(
+    //   Data?.user === "RELOAD_APP"
+    //   ? { ...Data?.user, lang: setLanguage(), reload:true }
+    //   : { ...Data?.user, lang: setLanguage() }
+    // )
+
+    // Run the callback function with the response data (if provided)
+    if(typeof callback === "function") callback(Data?.result)
+
+    // Log the response data if running locally
+    if(localHost) console.log(`resData_${link}`, Data?.result)
+
+    // Log any errors from the server response
+    const errorsData = Data?.errors || []
+    errorsData.forEach( (err) => console.error("errors", err) )
+
+  })
+  .catch( (err)=> console.error("PostToApi Error:", err) )
+
 }

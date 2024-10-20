@@ -15,8 +15,8 @@ const JobElement = ({props}) => {
 
   return (
     <Pressable style={styles.jobElement} onPress={()=>setJob(prev=>job)} >
-      <Text style={appStyles.txtYlw}>{time}</Text>
-      <Text style={appStyles.txtWht}>{shortName}</Text>
+      <Text style={{...appStyles.txtYlw, fontSize:11}}>{time}</Text>
+      <Text style={{...appStyles.txtWht, minHeight:18}}>{shortName}</Text>
       {/* <Text style={appStyles.txtYlw}>{tel}</Text> */}
       <Text style={{...appStyles.txtOrg, textAlign:"end"}}>{`${price} zł`}</Text>
     </Pressable>

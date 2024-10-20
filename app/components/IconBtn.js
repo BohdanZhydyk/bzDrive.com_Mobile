@@ -23,10 +23,14 @@ const IconBtn = (props) => {
       case "user":        return <Feather name="user" size={size} style={style} />
       case "settings":    return <SimpleLineIcons name="settings" size={size} style={style} />
       case "close":       return <AntDesign name="close" size={size} style={style} />
+      case "save":        return <MaterialCommunityIcons name="content-save-outline" size={size} style={style} />
+      case "check":       return <AntDesign name="check" size={size} style={style} />
+      case "delete":      return <AntDesign name="delete" size={size} style={style} />
       case "left":        return <FontAwesome5 name="chevron-left" size={size} style={style} />
       case "right":       return <FontAwesome5 name="chevron-right" size={size} style={style} />
       case "up":          return <FontAwesome5 name="chevron-up" size={size} style={style} />
       case "down":        return <FontAwesome5 name="chevron-down" size={size} style={style} />
+      case "plus":        return <AntDesign name="addfile" size={size} style={style} />
       case "Workshop":    return <MaterialCommunityIcons name="garage-variant" size={size} style={style} />
       case "News":        return <MaterialCommunityIcons name="newspaper-variant-multiple-outline" size={size} style={style} />
       case "Cleaning":    return <MaterialCommunityIcons name="vacuum-outline" size={size} style={style} />

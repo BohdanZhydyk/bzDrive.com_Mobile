@@ -3,23 +3,16 @@ import React, { useState } from 'react'
 import { appStyles } from '../../Styles'
 import IconBtn from '../IconBtn'
 import ContactImgs from './ContactImgs'
-import { sanitizeTxt } from '../../AppFunctions'
+import { dateFromYYYYMMDD, getDateFromTimeString, getTimeStringFromDate, sanitizeTxt } from '../../AppFunctions'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 
 const JobPannel = ({props}) => {
 
-  const {job, setJob} = props
+  const {job, setJob, Reducer} = props
 
-  const getDateFromTimeString = (timeString) => {
-    const [hours, minutes] = timeString.split(':').map(Number)
-    const date = new Date()
-    date.setHours(hours)
-    date.setMinutes(minutes)
-    date.setSeconds(0)
-    date.setMilliseconds(0)
-    return date
-  }
+  const _id = job?._id ?? "new"
+  const [date, setDate] = useState( dateFromYYYYMMDD( job?.date ) )
   
   const [from, setFrom] = useState(getDateFromTimeString(job?.time?.from || "00:00"))
   const [to, setTo] = useState(getDateFromTimeString(job?.time?.to || "00:00"))
@@ -40,10 +33,12 @@ const JobPannel = ({props}) => {
   const [www, setWWW] = useState(contacts?.www)
   const [email, setEmail] = useState(contacts?.email)
 
-  const [tasks, setTasks] = useState(job?.tasks)
-  const [price, setPrice] = useState(job?.price)
+  const [tasks, setTasks] = useState(job?.tasks ?? "")
+  const [price, setPrice] = useState(job?.price ?? "0.00")
+
+  const [del, setDel] = useState(false)
   
-  const [showPicker, setShowPicker] = useState({ from: false, to: false })
+  const [showPicker, setShowPicker] = useState({ from: false, to: false, date: false })
 
   const handleTimeChange = (type, event, selectedTime) => {
     const currentTime = selectedTime || (type === 'from' ? from : to)
@@ -59,25 +54,66 @@ const JobPannel = ({props}) => {
   const formattedFrom = formatTime(from)
   const formattedTo = formatTime(to)
 
+  function SAVE_JOB(){
+    Reducer({
+      type:"SAVE_JOB",
+      job: {
+        _id,
+        date: parseInt( `${date?.YYYY}${date?.MM}${date?.DD}` ),
+        time: { from:getTimeStringFromDate(from), to:getTimeStringFromDate(to) },
+        client: { name, shortName, nip, addr: {zip, town, street, nr}, contacts: {tel, www, email} },
+        price, tasks
+      }
+    })
+    setJob(prev=>false)
+  }
+
+  function DELETE_JOB(){
+    Reducer({ type:"DELETE_JOB", _id })
+    setJob(prev=>false)
+  }
+
   return (
     <View style={styles.jobPannel}>
 
-      <Pressable style={styles.closeBtn} onPress={()=>setJob(prev=>false)}>
-        <IconBtn ico={`close`} />
-      </Pressable>
+      <View style={{...appStyles.row, ...styles.btnsPannel}}>
 
-      <Text style={appStyles.txtGry}>{`ID: ${job?.id}`}</Text>
+        <Pressable onPress={()=>setJob(prev=>false)}>
+          <IconBtn ico={`close`} />
+        </Pressable>
+
+      </View>
+
+      <Text style={{...appStyles.txtGry, fontSize:10}}>{`ID: ${_id}`}</Text>
 
       <View style={styles.line}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.txtName}>{`Krótka nazwa:`}</Text>
-          <TextInput
-            style={styles.inputTxt}
-            value={sanitizeTxt(shortName, "CompanyNameShort")?.sanText}
-            onChangeText={setShortName}
-          />
+          <Text style={styles.txtName}>{`Data:`}</Text>
+          <Pressable onPress={() => showPickerFor('date')}>
+            <Text style={{ ...styles.inputTxt, textAlign: 'center' }}>
+              {`${date.DD} / ${date.MM} / ${date.YYYY}`}
+            </Text>
+          </Pressable>
+          {
+            showPicker.date && (
+              <DateTimePicker
+                value={new Date(`${date.YYYY}-${date.MM}-${date.DD}`)}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  const currentDate = selectedDate || new Date(`${date.YYYY}-${date.MM}-${date.DD}`)
+                  setShowPicker({ ...showPicker, date: false })
+                  setDate({
+                    YYYY: String(currentDate.getFullYear()).padStart(4, '0'),
+                    MM: String(currentDate.getMonth() + 1).padStart(2, '0'),
+                    DD: String(currentDate.getDate()).padStart(2, '0')
+                  })
+                }}
+              />
+            )
+          }
         </View>
-        <View style={{ width: "20%", marginLeft: 3 }}>
+        <View style={{ width: "25%", marginLeft: 3 }}>
           <Text style={styles.txtName}>{`Od:`}</Text>
           <Pressable onPress={() => showPickerFor('from')}>
             <Text style={{...styles.inputTxt, textAlign: 'center'}}>{formattedFrom}</Text>
@@ -93,7 +129,7 @@ const JobPannel = ({props}) => {
             />
           }
         </View>
-        <View style={{ width: "20%", marginLeft: 3 }}>
+        <View style={{ width: "25%", marginLeft: 3 }}>
           <Text style={styles.txtName}>{`Do:`}</Text>
           <Pressable onPress={() => showPickerFor('to')}>
             <Text style={{...styles.inputTxt, textAlign: 'center'}}>{formattedTo}</Text>
@@ -108,6 +144,17 @@ const JobPannel = ({props}) => {
               onChange={(event, selectedTime) => handleTimeChange('to', event, selectedTime)}
             />
           }
+        </View>
+      </View>
+
+      <View style={styles.line}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.txtName}>{`Krótka nazwa:`}</Text>
+          <TextInput
+            style={styles.inputTxt}
+            value={sanitizeTxt(shortName, "CompanyNameShort")?.sanText}
+            onChangeText={setShortName}
+          />
         </View>
       </View>
 
@@ -166,7 +213,7 @@ const JobPannel = ({props}) => {
 
       <View style={styles.line}>
         <View style={{width:"18%", marginLeft:3}}>
-          <Text style={styles.txtName}>{`ZIP:`}</Text>
+          <Text style={styles.txtName}>{`Kod:`}</Text>
           <TextInput
             style={styles.inputTxt}
             value={sanitizeTxt(zip, "ZIP")?.sanText}
@@ -175,7 +222,7 @@ const JobPannel = ({props}) => {
           />
         </View>
         <View style={{width:"25%", marginLeft:3}}>
-          <Text style={styles.txtName}>{`Miasto:`}</Text>
+          <Text style={styles.txtName}>{`Miejscowość:`}</Text>
           <TextInput
             style={styles.inputTxt}
             value={sanitizeTxt(town, "town")?.sanText}
@@ -203,7 +250,7 @@ const JobPannel = ({props}) => {
 
       <View style={styles.line}>
         <View style={{width:"100%"}}>
-          <Text style={styles.txtName}>{`Usługi:`}</Text>
+          <Text style={styles.txtName}>{`Zadania do wykonania:`}</Text>
           <TextInput
             style={styles.textArea}
             value={sanitizeTxt(tasks, "default")?.sanText}
@@ -216,9 +263,8 @@ const JobPannel = ({props}) => {
         </View>
       </View>
 
-
       <View style={styles.line}>
-        <View style={{flex:1}}></View>
+
         <View style={{width:"20%"}}>
           <Text style={styles.txtName}>{`Cena:`}</Text>
           <TextInput
@@ -229,6 +275,38 @@ const JobPannel = ({props}) => {
           />
         </View>
         <Text style={styles.zl}>{`zł`}</Text>
+
+        <View style={{flex:1, ...appStyles.row, ...appStyles.end, margin:5}}>
+
+          {
+            !del &&
+            <Pressable onPress={SAVE_JOB}>
+              <IconBtn ico={`save`} />
+            </Pressable>
+          }
+
+          {
+            !del && (_id !=="new") &&
+              <Pressable onPress={()=>setDel(prev=>true)}>
+                <IconBtn ico={`delete`} />
+              </Pressable>
+          }
+
+          {
+            del &&
+            <>
+              <Pressable onPress={DELETE_JOB}>
+                <IconBtn ico={`check`} />
+              </Pressable>
+
+              <Pressable onPress={()=>setDel(prev=>false)}>
+                <IconBtn ico={`close`} />
+              </Pressable>
+            </>
+          }
+
+        </View>
+
       </View>
 
       <ContactImgs props={{zip, town, street, nr, www, email, tel}} />
@@ -247,13 +325,13 @@ const styles = StyleSheet.create({
     marginRight: "1%",
     padding: "3%",
     width: "98%",
-    height: "100%",
-    backgroundColor: "#333",
+    minHeight: "100%",
+    backgroundColor: "#111",
     borderWidth: 1,
-    borderColor: "#999",
+    borderColor: "#f609",
     zIndex: 25
   },
-  closeBtn: {
+  btnsPannel: {
     position: "absolute",
     top: 0,
     right: 0,
