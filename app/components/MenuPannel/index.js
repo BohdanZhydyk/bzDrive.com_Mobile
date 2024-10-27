@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View } from 'react-native'
+import { StyleSheet, Pressable, View, Text } from 'react-native'
 import React from 'react'
 import { useAppState } from '../../StateContext'
 import TxtColor from '../TxtColor'
@@ -17,7 +17,7 @@ const MenuPannel = () => {
 
       <View style={styles.topLine}>
 
-        <TxtColor props={{txt: "MENU", color: "txtWht"}} />
+        <Text style={{...appStyles.txtWht, marginLeft:10, fontSize:30}}>{"MENU"}</Text>
 
         <View style={{...appStyles.row}}>
 
@@ -48,8 +48,12 @@ const MenuPannel = () => {
 
           return(
             <Link style={styles.menuLink} href={to} onPress={MENU_LINK_PRESS} key={key}>
-              <IconBtn ico={name} />
-              <TxtColor props={txtColorProps} />
+              <View style={{marginLeft:10}} >
+                <IconBtn ico={name} />
+              </View>
+              <View style={{marginLeft:15, fontSize:20}} >
+                <TxtColor props={txtColorProps} />
+              </View>
             </Link>
           )
         })
@@ -58,12 +62,16 @@ const MenuPannel = () => {
       {
         isMenu &&
         <Link style={styles.menuLink} href={`/cleaning`} onPress={()=>setIsMenu(prev=>!prev)} key={`MenuLinkBtnClean`}>
-          <IconBtn ico={`Cleaning`} />
-          <TxtColor props={{txt:`Cleaning`, color:"txtWht"}} />
+          <View style={{marginLeft:10}} >
+            <IconBtn ico={`Cleaning`} />
+          </View>
+          <View style={{marginLeft:15, fontSize:20}} >
+            <TxtColor props={{txt:`Cleaning`, color:"txtWht"}} />
+          </View>
         </Link>
       }
 
-    <StateStyled />
+      <StateStyled />
 
     </View>
   )
@@ -92,6 +100,7 @@ const styles = StyleSheet.create({
     paddingBottom:10
   },
   menuLink: {
-    alignItems:"stretch"
+    ...appStyles.row,
+    marginTop:5
   }
 })

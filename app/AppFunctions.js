@@ -279,7 +279,6 @@ export const PostToApi = async (link, object, callback)=>{
   const localLink = 'http://localhost:2000/API'
   const domainLink = 'https://bzdrive.com/API'
   const localHost = Platform.OS === 'web'
-  // const localHost = window.location.hostname === 'localhost'
   const API = localHost ? localLink : domainLink
 
   const bzToken = "bzDriveMobileToken"

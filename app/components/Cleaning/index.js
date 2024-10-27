@@ -7,14 +7,19 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { appStyles } from '../../Styles'
 import { dateFromYYYYMMDD } from '../../AppFunctions'
 import { cleaningReducer } from './cleaningReducer'
+import { TextInput } from 'react-native-web'
 
 
 const Cleaning = () => {
 
   const [week, setWeek] = useState(false)
   const [job, setJob] = useState(false)
+  const [search, setSearch] = useState( false )
+  const [searchObj, setSearchObj] = useState( false )
 
-  function Reducer(action){ cleaningReducer({action, week, setWeek, job, setJob}) }
+  const searchTopLine = {client:{shortName:"Klient", nip:"NIP", contacts:{tel:"Tel"}}}
+
+  function Reducer(action){ cleaningReducer({action, week, setWeek, job, setJob, search, setSearch, searchObj, setSearchObj}) }
 
   const totalPrice = !week ? "0.00" : week.reduce((sum, day) => {
     return sum + day.schedule.reduce((daySum, job) => {
@@ -31,7 +36,7 @@ const Cleaning = () => {
   const [showPicker, setShowPicker] = useState({ mainDate: false })
   const showPickerFor = (type) => { setShowPicker({ ...showPicker, [type]: true }) }
 
-  useEffect( ()=> { Reducer({type:"GET_JOBS", dayOfWeek}) }, [])
+  useEffect( ()=> { !week && Reducer({type:"GET_JOBS", dayOfWeek}) }, [])
   
   return (
     <View style={styles.cleanContainer}>
@@ -39,15 +44,19 @@ const Cleaning = () => {
       week &&
       <>
 
-        <View style={[appStyles.row, appStyles.between, {marginTop:10, marginBottom:10, alignItems:"center"}]}>
+        <View style={[appStyles.row, appStyles.between, {marginTop:5, marginBottom:5, alignItems:"center"}]}>
 
-          <View style={{...appStyles.row, ...appStyles.end, width:"10%", margin:5}}>
+          <View style={{...appStyles.row, width:"10%", margin:5}}>
             <Pressable onPress={()=>setJob(prev=>true)}>
               <IconBtn ico={`plus`} />
             </Pressable>
           </View>
 
           <View style={{...appStyles.row, ...appStyles.center,  flex: 1 }}>
+          {
+            !search
+            ?
+            <>
             <Pressable onPress={() => showPickerFor('mainDate')}>
               <Text style={{...appStyles.txtYlw, fontSize:20, fontWeight:"bold"}}>
                 {`${from.DD}/${from.MM}/${from.YYYY} - ${to.DD}/${to.MM}/${to.YYYY}`}
@@ -72,9 +81,59 @@ const Cleaning = () => {
                 />
               )
             }
+            </>
+            :
+            <View style={{flex:1, borderWidth:1, borderColor:"#999", borderRadius:5}}>
+              <TextInput
+                style={{...appStyles.txtWht, padding:5}}
+                value={search?.length > 0 ? search : ""}
+                onChangeText={setSearch}
+              />
+            </View>
+          }
+
+          </View>
+
+          {
+            (search?.length > 2) &&
+            <View style={{...appStyles.row, width:"10%", margin:5}}>
+              <Pressable onPress={()=>Reducer({type:"SEARCH_DOCS", search})}>
+                <IconBtn ico={`search`} />
+              </Pressable>
+            </View>
+          }
+
+          <View style={{...appStyles.row, width:"10%", margin:5}}>
+            <Pressable onPress={()=>{setSearch(prev=>!search); setSearchObj(prev=>false)}}>
+              <IconBtn ico={!search ? `doc` : `close`} />
+            </Pressable>
           </View>
 
         </View>
+
+        {
+          searchObj &&
+          <View>
+          {
+            [searchTopLine, ...searchObj].map( (searchLine, l)=>{
+
+              const key = `SearchLine${l}`
+
+              const elStyles = (l === 0)
+                ? {...appStyles.txtYlw, margin:1, padding:2, borderWidth:1, borderColor:"#999", borderRadius:2}
+                : {...appStyles.txtWht, margin:1, padding:2, borderWidth:1, borderColor:"#999", borderRadius:2}
+
+              return(
+                <Pressable style={{...appStyles.row}} onPress={()=> (l !== 0) && setJob(prev=>searchLine)} key={key} >
+                  <Text style={{...elStyles, width:"20%"}}>{searchLine?.client?.shortName ?? searchLine?.client?.name}</Text>
+                  <Text style={{...elStyles, width:"25%"}}>{searchLine?.client?.nip}</Text>
+                  <Text style={{...elStyles, width:"25%"}}>{searchLine?.client?.contacts?.tel}</Text>
+                </Pressable>
+              )
+            })
+          }
+          </View>
+        }
 
         {
           week && week.map( (day, d)=> (
@@ -100,7 +159,7 @@ export default Cleaning
 
 const styles = StyleSheet.create({
   cleanContainer: {
-    marginTop: 10,
+    marginTop: 0,
     marginBottom: 10
   },
   sum: {

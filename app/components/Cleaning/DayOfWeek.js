@@ -38,8 +38,10 @@ export default DayOfWeek
 const styles = StyleSheet.create({
   dayOfWeek: {
     ...appStyles.row,
-    minHeight:85,
-    padding: 5
+    minHeight:80,
+    paddingTop: 5,
+    paddingLeft: 5,
+    paddingRight: 5
   },
   dayInfo: {
     justifyContent:"center",
