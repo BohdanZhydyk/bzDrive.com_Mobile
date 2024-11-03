@@ -1,14 +1,15 @@
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import Feather from '@expo/vector-icons/Feather'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
 import { appStyles } from '../Styles'
 
-const IconBtn = (props) => {
+const IconBtn = ({props}) => {
+
+  const {ico, action} = props
 
   const size = 34
   const style = appStyles.txtOrg
@@ -16,7 +17,7 @@ const IconBtn = (props) => {
   const imgUrl = `https://bzdrive.com/files/`
 
   function renderIcon(){
-    switch (props?.ico) {
+    switch (ico) {
       case "home":        return <Ionicons name="home-outline" size={size} style={style} />
       case "office":      return <MaterialCommunityIcons name="office-building-cog-outline" size={size} style={style} />
       case "profile":     return <AntDesign name="book" size={size} style={style} />
@@ -35,17 +36,17 @@ const IconBtn = (props) => {
       case "plus":        return <Image source={{uri:`${imgUrl}ico/icoPlus.png`}} style={styles.icoBtnImg} />
       case "doc":         return <Image source={{uri:`${imgUrl}ico/icoDOC.png`}} style={styles.icoBtnImg} />
       case "search":      return <Image source={{uri:`${imgUrl}ico/icoSearch.png`}} style={styles.icoBtnImg} />
-      case "Workshop":    return <MaterialCommunityIcons name="garage-variant" size={size} style={style} />
-      case "News":        return <MaterialCommunityIcons name="newspaper-variant-multiple-outline" size={size} style={style} />
-      case "Cleaning":    return <MaterialCommunityIcons name="vacuum-outline" size={size} style={style} />
+      case "Workshop":    return <Image source={{uri:`${imgUrl}ico/icoWorkshop.png`}} style={styles.icoBtnImg} />
+      case "News":        return <Image source={{uri:`${imgUrl}ico/icoNews.png`}} style={styles.icoBtnImg} />
+      case "Cleaning":    return <Image source={{uri:`${imgUrl}ico/icoCleaning.png`}} style={styles.icoBtnImg} />
       default: break
     }
   }
 
   return (
-    <View style={appStyles.icoBtn}>
+    <Pressable style={styles.icoBtnImg} onPress={action} >
       {renderIcon()}
-    </View>
+    </Pressable>
   )
 }
 
@@ -53,9 +54,6 @@ export default IconBtn
 
 const styles = StyleSheet.create({
   icoBtnImg: {
-    width: 30,
-    height: 30,
-    justifyContent:"center",
-    alignItems:"center"
+    ...appStyles.icoBtn
   }
 })

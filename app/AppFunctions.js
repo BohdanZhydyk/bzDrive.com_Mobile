@@ -1,5 +1,6 @@
 import { Platform } from 'react-native'
 import axios from 'axios'
+import { dayNames, monthNames } from './AppConstants'
 
 // dateFromDDMMYYYY functions
 export const dateFromYYYYMMDD = ( YYYYMMDD ) => {
@@ -26,6 +27,16 @@ export const getTimeStringFromDate = (date) => {
   const hours = date.getHours().toString().padStart(2, '0')
   const minutes = date.getMinutes().toString().padStart(2, '0')
   return `${hours}:${minutes}`
+}
+
+// get month name
+export const getMonthName = (monthNr) => {
+  return monthNames[monthNr - 1]
+}
+
+// get day name
+export const getDayName = (dayNr) => {
+  return dayNames[dayNr]
 }
 
 // sanitization functions

@@ -2,16 +2,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { appStyles } from '../../Styles'
 import JobElement from './JobElement'
-import { dateFromYYYYMMDD } from '../../AppFunctions'
+import { dateFromYYYYMMDD, getDayName, getMonthName } from '../../AppFunctions'
 
 
 const DayOfWeek = ({props}) => {
 
   const {day, d, setJob} = props
 
-  const dayName = day?.dayInfo?.name
+  const dayName = getDayName(day?.dayInfo?.dayOfWeekCount)
   const date = day?.dayInfo?.date
-  const shortDate = `${dateFromYYYYMMDD(date).DD}.${dateFromYYYYMMDD(date).MM}`
+  const shortDate = `${dateFromYYYYMMDD(date).DD} ${getMonthName(dateFromYYYYMMDD(date).MM)}`
 
   return (
     <View style={styles.dayOfWeek} >
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     paddingRight: 5
   },
   dayInfo: {
+    width: "15%",
     justifyContent:"center",
     alignItems:"center",
     padding: 5,

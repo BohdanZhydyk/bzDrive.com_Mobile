@@ -10,8 +10,9 @@ export const appStyles = StyleSheet.create({
   },
 
   icoBtn: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
+    margin:5,
     justifyContent:"center",
     alignItems:"center"
   },

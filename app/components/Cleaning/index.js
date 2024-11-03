@@ -2,12 +2,12 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import JobPannel from './JobPannel'
 import DayOfWeek from './DayOfWeek'
-import IconBtn from '../IconBtn'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import { appStyles } from '../../Styles'
 import { dateFromYYYYMMDD } from '../../AppFunctions'
 import { cleaningReducer } from './cleaningReducer'
-import { TextInput } from 'react-native-web'
+import CleaningTopPannel from './CleaningTopPannel'
+import SearchDocPannel from './SearchDocPannel'
+import DownloadBar from '../DownloadBar'
 
 
 const Cleaning = () => {
@@ -17,9 +17,9 @@ const Cleaning = () => {
   const [search, setSearch] = useState( false )
   const [searchObj, setSearchObj] = useState( false )
 
-  const searchTopLine = {client:{shortName:"Klient", nip:"NIP", contacts:{tel:"Tel"}}}
+  const [download, setDownload] = useState(false)
 
-  function Reducer(action){ cleaningReducer({action, week, setWeek, job, setJob, search, setSearch, searchObj, setSearchObj}) }
+  function Reducer(action){ cleaningReducer({action, setWeek, job, setSearch, setSearchObj, setDownload})}
 
   const totalPrice = !week ? "0.00" : week.reduce((sum, day) => {
     return sum + day.schedule.reduce((daySum, job) => {
@@ -30,12 +30,6 @@ const Cleaning = () => {
   const nowDate = `${dateFromYYYYMMDD()?.YYYY}${dateFromYYYYMMDD()?.MM}${dateFromYYYYMMDD()?.DD}`
   const dayOfWeek =  week ? week[0]?.dayInfo?.date : nowDate
 
-  const from = week ? dateFromYYYYMMDD( week[0]?.dayInfo?.date ) : nowDate
-  const to = week ? dateFromYYYYMMDD( week[week?.length - 1]?.dayInfo?.date ) : nowDate
-
-  const [showPicker, setShowPicker] = useState({ mainDate: false })
-  const showPickerFor = (type) => { setShowPicker({ ...showPicker, [type]: true }) }
-
   useEffect( ()=> { !week && Reducer({type:"GET_JOBS", dayOfWeek}) }, [])
   
   return (
@@ -44,96 +38,13 @@ const Cleaning = () => {
       week &&
       <>
 
-        <View style={[appStyles.row, appStyles.between, {marginTop:5, marginBottom:5, alignItems:"center"}]}>
-
-          <View style={{...appStyles.row, width:"10%", margin:5}}>
-            <Pressable onPress={()=>setJob(prev=>true)}>
-              <IconBtn ico={`plus`} />
-            </Pressable>
-          </View>
-
-          <View style={{...appStyles.row, ...appStyles.center,  flex: 1 }}>
-          {
-            !search
-            ?
-            <>
-            <Pressable onPress={() => showPickerFor('mainDate')}>
-              <Text style={{...appStyles.txtYlw, fontSize:20, fontWeight:"bold"}}>
-                {`${from.DD}/${from.MM}/${from.YYYY} - ${to.DD}/${to.MM}/${to.YYYY}`}
-              </Text>
-            </Pressable>
-            {
-              showPicker.mainDate && (
-                <DateTimePicker
-                  value={new Date(`${from.YYYY}-${from.MM}-${from.DD}`)}
-                  mode="date"
-                  display="default"
-                  onChange={(event, selectedDate) => {
-                    const currentDate = selectedDate || new Date(`${from.YYYY}-${from.MM}-${from.DD}`)
-                    setShowPicker({ ...showPicker, mainDate: false })
-                    const newDay = {
-                      YYYY: String(currentDate.getFullYear()).padStart(4, '0'),
-                      MM: String(currentDate.getMonth() + 1).padStart(2, '0'),
-                      DD: String(currentDate.getDate()).padStart(2, '0')
-                    }
-                    Reducer({type:"GET_JOBS", dayOfWeek:parseInt(`${newDay.YYYY}${newDay.MM}${newDay.DD}`) })
-                  }}
-                />
-              )
-            }
-            </>
-            :
-            <View style={{flex:1, borderWidth:1, borderColor:"#999", borderRadius:5}}>
-              <TextInput
-                style={{...appStyles.txtWht, padding:5}}
-                value={search?.length > 0 ? search : ""}
-                onChangeText={setSearch}
-              />
-            </View>
-          }
-
-          </View>
-
-          {
-            (search?.length > 2) &&
-            <View style={{...appStyles.row, width:"10%", margin:5}}>
-              <Pressable onPress={()=>Reducer({type:"SEARCH_DOCS", search})}>
-                <IconBtn ico={`search`} />
-              </Pressable>
-            </View>
-          }
-
-          <View style={{...appStyles.row, width:"10%", margin:5}}>
-            <Pressable onPress={()=>{setSearch(prev=>!search); setSearchObj(prev=>false)}}>
-              <IconBtn ico={!search ? `doc` : `close`} />
-            </Pressable>
-          </View>
-
+        <View style={{...appStyles.start, height:5}}>
+          { download && <DownloadBar /> }
         </View>
 
-        {
-          searchObj &&
-          <View>
-          {
-            [searchTopLine, ...searchObj].map( (searchLine, l)=>{
+        <CleaningTopPannel props={{week, search, setJob, setSearch, setSearchObj, Reducer}}/>
 
-              const key = `SearchLine${l}`
-
-              const elStyles = (l === 0)
-                ? {...appStyles.txtYlw, margin:1, padding:2, borderWidth:1, borderColor:"#999", borderRadius:2}
-                : {...appStyles.txtWht, margin:1, padding:2, borderWidth:1, borderColor:"#999", borderRadius:2}
-
-              return(
-                <Pressable style={{...appStyles.row}} onPress={()=> (l !== 0) && setJob(prev=>searchLine)} key={key} >
-                  <Text style={{...elStyles, width:"20%"}}>{searchLine?.client?.shortName ?? searchLine?.client?.name}</Text>
-                  <Text style={{...elStyles, width:"25%"}}>{searchLine?.client?.nip}</Text>
-                  <Text style={{...elStyles, width:"25%"}}>{searchLine?.client?.contacts?.tel}</Text>
-                </Pressable>
-              )
-            })
-          }
-          </View>
-        }
+        { searchObj && <SearchDocPannel props={{searchObj, setJob}} /> }
 
         {
           week && week.map( (day, d)=> (

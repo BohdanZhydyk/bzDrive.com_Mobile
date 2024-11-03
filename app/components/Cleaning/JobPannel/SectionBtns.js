@@ -7,33 +7,27 @@ const SectionBtns = ({props}) => {
 
   const {_id, del, setDel, SAVE_JOB, DELETE_JOB} = props
 
+  const ACT_DELETE =  ()=> setDel(prev=>true)
+  const ACT_CLOSE =   ()=> setDel(prev=>false)
+
   return (
     <View style={styles.section}>
 
       {
         !del &&
-        <Pressable onPress={SAVE_JOB}>
-          <IconBtn ico={`save`} />
-        </Pressable>
+        <IconBtn props={{ ico:"save", action:SAVE_JOB }} />
       }
 
       {
         !del && (_id !=="new") &&
-        <Pressable onPress={()=>setDel(prev=>true)}>
-          <IconBtn ico={`delete`} />
-        </Pressable>
+        <IconBtn props={{ ico:"delete", action:ACT_DELETE }} />
       }
 
       {
         del &&
         <>
-          <Pressable onPress={DELETE_JOB}>
-            <IconBtn ico={`check`} />
-          </Pressable>
-
-          <Pressable onPress={()=>setDel(prev=>false)}>
-            <IconBtn ico={`close`} />
-          </Pressable>
+          <IconBtn props={{ ico:"check", action:DELETE_JOB }} />
+          <IconBtn props={{ ico:"close", action:ACT_CLOSE }} />
         </>
       }
 

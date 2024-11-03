@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { appStyles } from '../../../Styles'
-import { TextInput } from 'react-native-web'
 
 const InputTextArea = ({props}) => {
 

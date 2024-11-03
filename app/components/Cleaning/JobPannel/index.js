@@ -11,7 +11,7 @@ import SectionNipTel from './SectionNipTel'
 import SectionWwwEmail from './SectionWwwEmail'
 import SectionPrice from './SectionPrice'
 import SectionBtns from './SectionBtns'
-import ContactImgs from './../ContactImgs'
+import ContactImgs from './ContactImgs'
 
 
 const JobPannel = ({props}) => {
@@ -58,62 +58,66 @@ const JobPannel = ({props}) => {
   }
 
   return (
-    <View style={styles.jobPannel}>
+    <View style={styles.jobPannelWrapper}>
 
-      <SectionTop props={{_id, setJob}} />
+      <View style={styles.jobPannel}>
 
-      <View style={styles.line}>
-        <SectionDateTime props={{date, setDate, from, setFrom, to, setTo}} />
+        <SectionTop props={{_id, setJob}} />
+
+        <View style={styles.line}>
+          <SectionDateTime props={{date, setDate, from, setFrom, to, setTo}} />
+        </View>
+
+        <View style={styles.line}>
+          <InputTypeText
+            props={{
+              st:{ flex: 1 }, legend:`Krótka nazwa:`, cb:setShortName,
+              value:sanitizeTxt(shortName, "CompanyNameShort")?.sanText
+            }}
+          />
+        </View>
+
+        <View style={styles.line}>
+          <InputTypeText
+            props={{
+              st:{ flex: 1 }, legend:`Nazwa:`, cb:setName,
+              value:sanitizeTxt(name, "CompanyName")?.sanText
+            }}
+          />
+        </View>
+
+        <View style={styles.line}>
+          <SectionAddr props={{zip, setZIP, town, setTown, street, setStreet, nr, setNr}} />
+        </View>
+
+        <View style={styles.line}>
+          <SectionNipTel props={{nip, setNIP, tel, setTel}} />
+        </View>
+
+        <View style={styles.line}>
+          <SectionWwwEmail props={{www, setWWW, email, setEmail}} />
+        </View>
+
+        <View style={styles.line}>
+          <InputTextArea
+            props={{
+              st:{ width:"100%" }, legend:`Zadania do wykonania:`, cb:setTasks, rows:4,
+              value:sanitizeTxt(tasks, "default")?.sanText
+            }}
+          />
+        </View>
+
+        <View style={styles.line}>
+
+          <SectionPrice props={{price, setPrice}} />
+
+          <SectionBtns props={{_id, del, setDel, SAVE_JOB, DELETE_JOB}} />
+
+        </View>
+
+        <ContactImgs props={{zip, town, street, nr, www, email, tel}} />
+
       </View>
-
-      <View style={styles.line}>
-        <InputTypeText
-          props={{
-            st:{ flex: 1 }, legend:`Krótka nazwa:`, cb:setShortName,
-            value:sanitizeTxt(shortName, "CompanyNameShort")?.sanText
-          }}
-        />
-      </View>
-
-      <View style={styles.line}>
-        <InputTypeText
-          props={{
-            st:{ flex: 1 }, legend:`Nazwa:`, cb:setName,
-            value:sanitizeTxt(name, "CompanyName")?.sanText
-          }}
-        />
-      </View>
-
-      <View style={styles.line}>
-        <SectionAddr props={{zip, setZIP, town, setTown, street, setStreet, nr, setNr}} />
-      </View>
-
-      <View style={styles.line}>
-        <SectionNipTel props={{nip, setNIP, tel, setTel}} />
-      </View>
-
-      <View style={styles.line}>
-        <SectionWwwEmail props={{www, setWWW, email, setEmail}} />
-      </View>
-
-      <View style={styles.line}>
-        <InputTextArea
-          props={{
-            st:{ width:"100%" }, legend:`Zadania do wykonania:`, cb:setTasks, rows:4,
-            value:sanitizeTxt(tasks, "default")?.sanText
-          }}
-        />
-      </View>
-
-      <View style={styles.line}>
-
-        <SectionPrice props={{price, setPrice}} />
-
-        <SectionBtns props={{_id, del, setDel, SAVE_JOB, DELETE_JOB}} />
-
-      </View>
-
-      <ContactImgs props={{zip, town, street, nr, www, email, tel}} />
 
     </View>
   )
@@ -122,18 +126,20 @@ const JobPannel = ({props}) => {
 export default JobPannel
 
 const styles = StyleSheet.create({
-  jobPannel: {
+  jobPannelWrapper:{
     position: "absolute",
-    top: 5,
-    marginLeft: "1%",
-    marginRight: "1%",
+    width: "100%",
+    backgroundColor: "#222",
+    zIndex: 25
+  },
+  jobPannel: {
+    width: "98%",
+    margin: 5,
     paddingLeft: "3%",
     paddingRight: "3%",
-    width: "98%",
     backgroundColor: "#111",
     borderWidth: 1,
     borderColor: "#f609",
-    zIndex: 25
   },
   line: {
     ...appStyles.row,

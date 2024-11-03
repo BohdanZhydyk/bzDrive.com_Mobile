@@ -7,6 +7,8 @@ const SectionTop = ({props}) => {
 
   const {_id, setJob} = props
 
+  const ACT_CLOSE = ()=> setJob(prev=>false)
+
   return (
     <View style={styles.section}>
 
@@ -14,9 +16,7 @@ const SectionTop = ({props}) => {
         {`ID: ${_id}`}
       </Text>
 
-      <Pressable onPress={()=>setJob(prev=>false)}>
-        <IconBtn ico={`close`} />
-      </Pressable>
+      <IconBtn props={{ ico:"close", action:ACT_CLOSE }} />
 
     </View>
   )
