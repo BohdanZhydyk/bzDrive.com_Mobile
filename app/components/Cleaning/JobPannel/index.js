@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     paddingLeft: "3%",
     paddingRight: "3%",
     width: "98%",
-    minHeight: "100%",
     backgroundColor: "#111",
     borderWidth: 1,
     borderColor: "#f609",

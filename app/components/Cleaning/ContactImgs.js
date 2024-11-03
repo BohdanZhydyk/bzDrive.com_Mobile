@@ -19,11 +19,15 @@ const ContactImgs = ({props}) => {
 
   return (
     <View style={styles.contacts}>
-    {
-      contactImgs?.map( (contact, c)=>{
-        return( <Contact contact={contact} key={`JobPannelContactImg${contact?.key}${c}`} /> )
-      })
-    }
+
+      <View style={styles.wrapper}>
+      {
+        contactImgs?.map( (contact, c)=>{
+          return( <Contact contact={contact} key={`JobPannelContactImg${contact?.key}${c}`} /> )
+        })
+      }
+      </View>
+
     </View>
   )
 }
@@ -32,10 +36,16 @@ export default ContactImgs
 
 const styles = StyleSheet.create({
   contacts: {
-    position: "absolute",
+    width: "100%",
+    paddingTop:30,
+    paddingBottom:10,
+    paddingLeft:10,
+    paddingRight:10,
+    ...appStyles.row,
+    ...appStyles.end
+  },
+  wrapper: {
     width: "70%",
-    bottom: 10,
-    right: 10,
     ...appStyles.row,
     ...appStyles.between
   }
