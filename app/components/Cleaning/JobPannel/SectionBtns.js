@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { appStyles } from '../../../Styles'
-import IconBtn from '../../IconBtn'
+import IconBtn from '../../All/IconBtn'
 
 const SectionBtns = ({props}) => {
 

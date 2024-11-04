@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
-import InputTypeText from './InputTypeText'
+import InputTypeText from '../../All/InputTypeText'
 import { sanitizeTxt } from '../../../AppFunctions'
 
 const SectionAddr = ({props}) => {

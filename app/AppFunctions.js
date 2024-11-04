@@ -286,6 +286,7 @@ export const sanitizeTxt = ( txt, name = "default" ) => {
 
 // function for sending a POST request to the server and receiving a response from it
 export const PostToApi = async (link, object, callback)=>{
+
   // Set up the API link to use based on the environment (local or remote)
   const localLink = 'http://localhost:2000/API'
   const domainLink = 'https://bzdrive.com/API'

@@ -1,29 +1,38 @@
 import { StyleSheet, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppState } from '../../StateContext'
-import StateStyled from '../StateStyled'
 import MenuPannelTopLine from './MenuPannelTopLine'
 import NavigationLink from './NavigationLink'
+import SettingsPannel from './SettingsPannel'
+import UserPannel from './UserPannel'
 
 
 const MenuPannel = () => {
 
   const { isMenu, nav } = useAppState()
 
+  const [pannelMode, setPannelMode] = useState("menu")
+
+  const isSettingsPannel = (pannelMode === "settings")
+  const isUserPannel = (pannelMode === "user")
+  const isMenuPannel = (pannelMode === "menu")
+
   return (
     <View style={ isMenu ? styles.pannel : styles.none }>
 
-      <MenuPannelTopLine />
+      <MenuPannelTopLine props={{isMenuPannel, setPannelMode}} />
 
       {
-        (isMenu && nav) && [...nav, {name:"Cleaning", to:"/cleaning"}]?.map( (navLink, n)=>{
+        (isMenu && nav && isMenuPannel) && [...nav, {name:"Cleaning", to:"/cleaning"}]?.map( (navLink, n)=>{
           return(
             <NavigationLink props={{navLink}} key={`MenuLinkBtn${n}`} />
           )
         })
       }
 
-      <StateStyled />
+      { (isMenu && isSettingsPannel) && <SettingsPannel /> }
+
+      { (isMenu && isUserPannel) && <UserPannel /> }
 
     </View>
   )

@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native'
 import React from 'react'
-import { appStyles } from '../Styles'
+import { appStyles } from '../../Styles'
 
 const TxtColor = ({props}) => {
 

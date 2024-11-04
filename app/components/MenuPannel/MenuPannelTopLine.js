@@ -1,16 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useAppState } from '../../StateContext'
-import IconBtn from '../IconBtn'
+import IconBtn from '../All/IconBtn'
 import { appStyles } from '../../Styles'
 
-const MenuPannelTopLine = () => {
+const MenuPannelTopLine = ({props}) => {
+
+  const {isMenuPannel, setPannelMode} = props
 
   const { setIsMenu } = useAppState()
 
-  const ACT_SETTINGS =  ()=> {alert(`"SettingsPannel" zostanie rozbudowany w przyszłości.`)}
-  const ACT_USER =      ()=> {alert(`"UserPanel" zostanie rozbudowany w przyszłości.`)}
-  const ACT_MENU_FOLD = ()=> setIsMenu(prev=>!prev)
+  const ACT_SETTINGS =  ()=> setPannelMode(prev=>"settings")
+  const ACT_USER =      ()=> setPannelMode(prev=>"user")
+  const ACT_MENU_FOLD = ()=> {
+    setPannelMode(prev=>"menu")
+    isMenuPannel && setIsMenu(prev=>!prev)
+  }
 
   return (
     <View style={styles.topLine}>

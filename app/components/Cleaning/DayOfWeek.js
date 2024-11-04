@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { dateFromYYYYMMDD, getDayName, getMonthName } from '../../AppFunctions'
 import { appStyles } from '../../Styles'
 import JobElement from './JobElement'
-import { dateFromYYYYMMDD, getDayName, getMonthName } from '../../AppFunctions'
 
 
 const DayOfWeek = ({props}) => {

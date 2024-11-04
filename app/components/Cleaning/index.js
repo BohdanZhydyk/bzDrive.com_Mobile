@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import JobPannel from './JobPannel'
 import DayOfWeek from './DayOfWeek'
@@ -7,7 +7,7 @@ import { dateFromYYYYMMDD } from '../../AppFunctions'
 import { cleaningReducer } from './cleaningReducer'
 import CleaningTopPannel from './CleaningTopPannel'
 import SearchDocPannel from './SearchDocPannel'
-import DownloadBar from '../DownloadBar'
+import DownloadBar from '../All/DownloadBar'
 
 
 const Cleaning = () => {

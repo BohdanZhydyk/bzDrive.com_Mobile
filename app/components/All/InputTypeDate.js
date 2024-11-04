@@ -1,27 +1,26 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { appStyles } from '../../../Styles'
-import { getDateFromTimeString } from '../../../AppFunctions'
+import { appStyles } from '../../Styles'
+import { dateFromYYYYMMDD } from '../../AppFunctions'
 
-const InputTypeTime = ({props}) => {
+const InputTypeDate = ({props}) => {
 
   const {st, legend, value, cb} = props
 
   const [showPicker, setShowPicker] = useState( false )
 
-  function formatTime(date){
-    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
-  }
-
-  function ON_CHG(selectedTime){
-    const currentTime = selectedTime || timeValue
+  function ON_CHG(selectedDate){
+    const YYYY = String((selectedDate || dateValue).getFullYear()).padStart(4, '0')
+    const MM = String((selectedDate || dateValue).getMonth() + 1).padStart(2, '0')
+    const DD = String((selectedDate || dateValue).getDate()).padStart(2, '0')
     setShowPicker( false )
-    cb( formatTime( currentTime ) )
+    cb( parseInt(`${YYYY}${MM}${DD}`) )
   }
 
-  const timeValue = getDateFromTimeString( value || "00:00" )
-  const timeTxt = formatTime( timeValue )
+  const date = dateFromYYYYMMDD( value )
+  const dateTxt = `${date?.DD} / ${date?.MM} / ${date?.YYYY}`
+  const dateValue = new Date(`${date.YYYY}-${date.MM}-${date.DD}`)
 
   return (
     <View style={st}>
@@ -32,18 +31,17 @@ const InputTypeTime = ({props}) => {
 
       <Pressable onPress={() => setShowPicker(true)}>
         <Text style={styles.value}>
-          {timeTxt}
+          {dateTxt}
         </Text>
       </Pressable>
 
       {
         showPicker &&
         <DateTimePicker
-          value={timeValue}
-          mode="time"
-          is24Hour={true}
+          value={dateValue}
+          mode="date"
           display="default"
-          onChange={ (event, selectedTime)=> ON_CHG(selectedTime) }
+          onChange={ (event, selectedDate)=> ON_CHG(selectedDate) }
         />
       }
 
@@ -51,7 +49,7 @@ const InputTypeTime = ({props}) => {
   )
 }
 
-export default InputTypeTime
+export default InputTypeDate
 
 const styles = StyleSheet.create({
   legend: {

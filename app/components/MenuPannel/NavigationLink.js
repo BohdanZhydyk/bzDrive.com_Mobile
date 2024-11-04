@@ -2,8 +2,8 @@ import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import { useAppState } from '../../StateContext'
 import { Link } from 'expo-router'
-import IconBtn from '../IconBtn'
-import TxtColor from '../TxtColor'
+import IconBtn from '../All/IconBtn'
+import TxtColor from '../All/TxtColor'
 import { appStyles } from '../../Styles'
 
 const NavigationLink = ({props}) => {

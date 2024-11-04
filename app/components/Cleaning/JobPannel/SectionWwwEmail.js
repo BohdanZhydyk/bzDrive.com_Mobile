@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
-import InputTypeText from './InputTypeText'
+import InputTypeText from '../../All/InputTypeText'
 import { sanitizeTxt } from '../../../AppFunctions'
 
 const SectionWwwEmail = ({props}) => {
@@ -19,7 +19,7 @@ const SectionWwwEmail = ({props}) => {
 
       <InputTypeText
         props={{
-          st:{ width:"50%", marginLeft:3 }, legend:`E-mail:`, cb:setEmail, kbType:"email-address",
+          st:{ width:"50%", marginLeft:3 }, legend:`E-mail:`, cb:setEmail, kbType:"email",
           value:sanitizeTxt(email, "email")?.sanText
         }}
       />

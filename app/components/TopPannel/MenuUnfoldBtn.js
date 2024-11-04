@@ -1,7 +1,7 @@
-import { Pressable, View } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import { useAppState } from '../../StateContext'
-import IconBtn from '../IconBtn'
+import IconBtn from '../All/IconBtn'
 import { appStyles } from '../../Styles'
 
 

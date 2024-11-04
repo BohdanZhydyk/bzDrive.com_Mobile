@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text } from 'react-native'
 import { Link, Stack } from 'expo-router'
-import TxtColor from './components/TxtColor'
-import IconBtn from './components/IconBtn'
+import TxtColor from './components/All/TxtColor'
+import IconBtn from './components/All/IconBtn'
 import Contacts from './components/Contacts'
 import TopPannel from './components/TopPannel'
 import MenuPannel from './components/MenuPannel'
@@ -17,7 +17,7 @@ export default function NotFoundScreen() {
       <TopPannel />
 
       <Link style={styles.menuLink} href={`/`}>
-        <IconBtn ico="Workshop" />
+        <IconBtn props={{ ico:"Workshop", action:()=>{} }} />
         <TxtColor props={{txt:`Workshop`, color:"txtWht"}} />
       </Link>
       

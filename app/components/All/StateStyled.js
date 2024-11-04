@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from 'react-native'
 import React from 'react'
-import { useAppState } from '../StateContext'
-import { appStyles } from '../Styles'
+import { useAppState } from '../../StateContext'
+import { appStyles } from '../../Styles'
 
 const StateStyled = () => {
 

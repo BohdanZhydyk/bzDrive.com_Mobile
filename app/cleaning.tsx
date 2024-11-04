@@ -1,12 +1,12 @@
 import { ScrollView, View } from 'react-native'
 import React from 'react'
-import Contacts from './components/Contacts'
-import TopPannel from './components/TopPannel'
-import MenuPannel from './components/MenuPannel'
-import EmptyContent from './components/EmptyContent'
-import Cleaning from './components/Cleaning'
 import { appStyles } from './Styles'
 import { useAppState } from './StateContext'
+import EmptyContent from './components/All/EmptyContent'
+import TopPannel from './components/TopPannel'
+import Contacts from './components/Contacts'
+import MenuPannel from './components/MenuPannel'
+import Cleaning from './components/Cleaning'
 
 
 const CleaningScreen = () => {

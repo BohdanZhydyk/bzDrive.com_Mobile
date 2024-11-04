@@ -58,8 +58,9 @@ export const appStyles = StyleSheet.create({
   txtGry:{ color:"#999" },
   txtOrg:{ color:"#f60" },
   txtGrn:{ color:"#191" },
-  txtBlu:{ color:"#00f" },
   txtRed:{ color:"#f00" },
-  txtYlw:{ color:"#fd0" }
+  txtYlw:{ color:"#fd0" },
+  txtBlu:{ color:"#00f" },
+  txtLightBlu:{ color:"#007bff" }
 
 })

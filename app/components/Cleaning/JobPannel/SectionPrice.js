@@ -1,6 +1,6 @@
 import { StyleSheet, Text } from 'react-native'
 import React from 'react'
-import InputTypeText from './InputTypeText'
+import InputTypeText from '../../All/InputTypeText'
 import { sanitizeTxt } from '../../../AppFunctions'
 import { appStyles } from '../../../Styles'
 
@@ -13,7 +13,7 @@ const SectionPrice = ({props}) => {
 
       <InputTypeText
         props={{
-          st:{ width:"20%" }, legend:`Cena:`, cb:setPrice, kbType:"decimal-pad",
+          st:{ width:"20%" }, legend:`Cena:`, cb:setPrice, kbType:"decimal",
           value:sanitizeTxt(price, "price")?.sanText
         }}
       />

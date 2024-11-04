@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { appStyles } from '../../../Styles'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { dateFromYYYYMMDD, getMonthName } from '../../../AppFunctions'
-import IconBtn from '../../IconBtn'
+import IconBtn from '../../All/IconBtn'
 
 const DateTitle = ({props}) => {
 

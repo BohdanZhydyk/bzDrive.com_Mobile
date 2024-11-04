@@ -1,4 +1,4 @@
-import { dateFromYYYYMMDD, PostToApi } from "../../AppFunctions";
+import { dateFromYYYYMMDD, PostToApi } from "../../AppFunctions"
 
 
 export const cleaningReducer = ({action, setWeek, job, setSearch, setSearchObj, setDownload}) => {

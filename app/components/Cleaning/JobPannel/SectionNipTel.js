@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
-import InputTypeText from './InputTypeText'
+import InputTypeText from '../../All/InputTypeText'
 import { sanitizeTxt } from '../../../AppFunctions'
 
 const SectionNipTel = ({props}) => {
@@ -19,7 +19,7 @@ const SectionNipTel = ({props}) => {
 
       <InputTypeText
         props={{
-          st:{ width:"50%", marginLeft:3 }, legend:`Tel:`, cb:setTel, kbType:"phone-pad",
+          st:{ width:"50%", marginLeft:3 }, legend:`Tel:`, cb:setTel, kbType:"tel",
           value:sanitizeTxt(tel, "tel")?.sanText
         }}
       />

@@ -5,7 +5,7 @@ import AntDesign from '@expo/vector-icons/AntDesign'
 import Feather from '@expo/vector-icons/Feather'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
-import { appStyles } from '../Styles'
+import { appStyles } from '../../Styles'
 
 const IconBtn = ({props}) => {
 
@@ -39,6 +39,7 @@ const IconBtn = ({props}) => {
       case "Workshop":    return <Image source={{uri:`${imgUrl}ico/icoWorkshop.png`}} style={styles.icoBtnImg} />
       case "News":        return <Image source={{uri:`${imgUrl}ico/icoNews.png`}} style={styles.icoBtnImg} />
       case "Cleaning":    return <Image source={{uri:`${imgUrl}ico/icoCleaning.png`}} style={styles.icoBtnImg} />
+      case "logOut":      return <Image source={{uri:`${imgUrl}ico/icoLogOut.png`}} style={styles.icoBtnImg} />
       default: break
     }
   }

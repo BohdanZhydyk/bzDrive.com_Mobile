@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
-import InputTypeDate from './InputTypeDate'
-import InputTypeTime from './InputTypeTime'
+import InputTypeDate from '../../All/InputTypeDate'
+import InputTypeTime from '../../All/InputTypeTime'
 
 const SectionDateTime = ({props}) => {
 
